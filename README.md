@@ -1,6 +1,6 @@
 # Cartographer
 
-Stack adoption and compatibility tool for the [Constrain](https://github.com/jmcentire/constrain) software engineering stack.
+Stack adoption and compatibility tool for the [Constrain](https://github.com/wandercom/constrain) software engineering stack.
 
 Cartographer answers two questions:
 
@@ -19,7 +19,7 @@ pip install cartographer
 Or from source:
 
 ```bash
-git clone https://github.com/jmcentire/cartographer.git
+git clone https://github.com/wandercom/cartographer.git
 cd cartographer
 pip install -e ".[dev]"
 ```
@@ -185,7 +185,7 @@ stack:
 output_dir: ".cartographer/drafts/"
 
 compatibility:
-  pact_key_format: "PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+"  # See https://github.com/jmcentire/pact/blob/main/PACT_KEY_STANDARD.md
+  pact_key_format: "PACT:[a-zA-Z0-9_]+:[a-zA-Z0-9_]+"  # See https://github.com/wandercom/pact/blob/main/PACT_KEY_STANDARD.md
   min_baton_schema_version: "2.0"
 ```
 
@@ -205,12 +205,12 @@ All drafts include `_draft: true` and `_generated_by: cartographer` markers. Too
 
 Cartographer is part of a contract-first software engineering stack:
 
-- **[Constrain](https://github.com/jmcentire/constrain)** -- constraint discovery through guided interview
-- **[Pact](https://github.com/jmcentire/pact)** -- contract-first multi-agent development
-- **[Ledger](https://github.com/jmcentire/ledger)** -- schema registry and data obligation manager
+- **[Constrain](https://github.com/wandercom/constrain)** -- constraint discovery through guided interview
+- **[Pact](https://github.com/wandercom/pact)** -- contract-first multi-agent development
+- **[Ledger](https://github.com/wandercom/ledger)** -- schema registry and data obligation manager
 - **Arbiter** -- trust and authority management
-- **[Baton](https://github.com/jmcentire/baton)** -- cloud-agnostic circuit orchestration
-- **[Sentinel](https://github.com/jmcentire/sentinel)** -- production attribution and contract tightening
+- **[Baton](https://github.com/wandercom/baton)** -- cloud-agnostic circuit orchestration
+- **[Sentinel](https://github.com/wandercom/sentinel)** -- production attribution and contract tightening
 - **Cartographer** -- adoption and compatibility (this tool)
 
 ## License

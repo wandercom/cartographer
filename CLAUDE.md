@@ -60,4 +60,4 @@ python3 -m pytest tests/smoke/ -v    # 47 smoke tests
 - Constrain session: `.constrain/sessions/` (artifacts: prompt.md, constraints.yaml, trust_policy.yaml, component_map.yaml, schema_hints.yaml)
 - Baton skeleton: `baton.yaml`
 - Brief: `brief.md`
-- Landing page: `docs/index.html` (GitHub Pages at jmcentire.github.io/cartographer)
+- Landing page: `docs/index.html` (GitHub Pages at wandercom.github.io/cartographer)

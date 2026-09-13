@@ -392,7 +392,7 @@ no code fences. It must parse and validate against ControlDef on the first try.
 5. Ledger composition: `ledger_obligation`/`ledger_tier_encrypted` detectors resolve the registry via the existing `ledger_checker._find_registry` (refactor it to a shared `compliance`-importable helper or import directly). No reimplementation of classification.
 6. `compliance verify` exits non-zero iff a baseline-PASS control regresses or `score_pct` drops; exits 0 if posture holds/improves; prints a was→now diff.
 7. `add-risk --adopt` produces a `ControlDef`-valid entry appended to `controls_dir`, rejects schema-invalid or id-colliding drafts, and `--gen-test` renders the matching test.
-8. Tests: unit tests for each detector (fixtures: a tiny synthetic Ledger registry, a synthetic source tree, present/absent/stale evidence files); a test that every packaged framework YAML loads and validates against `ControlDef`; a round-trip test that a rendered `static_assertion` test file is importable and passes against its fixture; a `verify` regression test (baseline pass → mutate → expect exit 1). All under `~/Code/cartographer/tests/`, runnable via `pytest`.
+8. Tests: unit tests for each detector (fixtures: a tiny synthetic Ledger registry, a synthetic source tree, present/absent/stale evidence files); a test that every packaged framework YAML loads and validates against `ControlDef`; a round-trip test that a rendered `static_assertion` test file is importable and passes against its fixture; a `verify` regression test (baseline pass → mutate → expect exit 1). All under `~/WanderRepos/repos/cartographer/tests/`, runnable via `pytest`.
 9. No regression in existing Cartographer tests; `models.py`, `report/generator.py`, and the `check` exit logic are reused unchanged (new code only).
 10. `prompt.md`/README updated with the two AI prompts and the `compliance` command reference.
 
@@ -421,7 +421,7 @@ no code fences. It must parse and validate against ControlDef on the first try.
   ```bash
   pip install -e ~/Code/cartographer[dev]        # click, pydantic, pyyaml, pytest
   pip install -e ~/Code/cartographer[api]         # only if exposing compliance over HTTP later
-  cd ~/Code/cartographer && python3 -m pytest -q  # full suite (addopts -x -q per pyproject)
+  cd ~/WanderRepos/repos/cartographer && python3 -m pytest -q  # full suite (addopts -x -q per pyproject)
   cartographer compliance scan --help             # smoke the new command group
   ```
   LLM features use `ANTHROPIC_API_KEY` (per the user's `~/.profile`); add `anthropic` as an optional dependency group `[llm]` in `pyproject.toml`.
