@@ -4,7 +4,7 @@ I now have full, verified knowledge of the real APIs. I have everything needed t
 
 # IMPLEMENTATION-READY SPEC: `cartographer compliance` — Generic Compliance-Posture Verification
 
-Status: ready for Codex. Target package: **Cartographer** (`~/Code/cartographer`, v0.1.2, MIT, Python 3.12+, Click + Pydantic v2 + PyYAML). Project-agnostic; MEA is the first consumer. All APIs cited below are verified against current source.
+Status: ready for Codex. Target package: **Cartographer** (this repo, v0.1.2, MIT, Python 3.12+, Click + Pydantic v2 + PyYAML). Project-agnostic; MEA is the first consumer. All APIs cited below are verified against current source.
 
 ---
 
@@ -392,13 +392,13 @@ no code fences. It must parse and validate against ControlDef on the first try.
 5. Ledger composition: `ledger_obligation`/`ledger_tier_encrypted` detectors resolve the registry via the existing `ledger_checker._find_registry` (refactor it to a shared `compliance`-importable helper or import directly). No reimplementation of classification.
 6. `compliance verify` exits non-zero iff a baseline-PASS control regresses or `score_pct` drops; exits 0 if posture holds/improves; prints a was→now diff.
 7. `add-risk --adopt` produces a `ControlDef`-valid entry appended to `controls_dir`, rejects schema-invalid or id-colliding drafts, and `--gen-test` renders the matching test.
-8. Tests: unit tests for each detector (fixtures: a tiny synthetic Ledger registry, a synthetic source tree, present/absent/stale evidence files); a test that every packaged framework YAML loads and validates against `ControlDef`; a round-trip test that a rendered `static_assertion` test file is importable and passes against its fixture; a `verify` regression test (baseline pass → mutate → expect exit 1). All under `~/WanderRepos/repos/cartographer/tests/`, runnable via `pytest`.
+8. Tests: unit tests for each detector (fixtures: a tiny synthetic Ledger registry, a synthetic source tree, present/absent/stale evidence files); a test that every packaged framework YAML loads and validates against `ControlDef`; a round-trip test that a rendered `static_assertion` test file is importable and passes against its fixture; a `verify` regression test (baseline pass → mutate → expect exit 1). All under `cartographer/tests/`, runnable via `pytest`.
 9. No regression in existing Cartographer tests; `models.py`, `report/generator.py`, and the `check` exit logic are reused unchanged (new code only).
 10. `prompt.md`/README updated with the two AI prompts and the `compliance` command reference.
 
 ### 7.2 Codex handoff
 
-- **Repo / package**: `~/Code/cartographer` (GitHub: as configured for that repo, MIT). Branch off `main`; do not commit/push until the user asks.
+- **Repo / package**: this repo (MIT). Branch off `main`; do not commit/push until the user asks.
 - **File layout to create**:
   ```
   src/cartographer/compliance/
@@ -419,15 +419,15 @@ no code fences. It must parse and validate against ControlDef on the first try.
   Plus: `ComplianceConfig` model added to `config/loader.py` `CartographerConfig`; `compliance` Click group added to `cli/main.py`; `compliance/` test dir under `tests/`.
 - **Build/test**:
   ```bash
-  pip install -e ~/Code/cartographer[dev]        # click, pydantic, pyyaml, pytest
-  pip install -e ~/Code/cartographer[api]         # only if exposing compliance over HTTP later
-  cd ~/WanderRepos/repos/cartographer && python3 -m pytest -q  # full suite (addopts -x -q per pyproject)
+  pip install -e '.[dev]'       # click, pydantic, pyyaml, pytest
+  pip install -e '.[api]'        # only if exposing compliance over HTTP later
+  python3 -m pytest -q  # full suite (addopts -x -q per pyproject)
   cartographer compliance scan --help             # smoke the new command group
   ```
   LLM features use `ANTHROPIC_API_KEY` (per the user's `~/.profile`); add `anthropic` as an optional dependency group `[llm]` in `pyproject.toml`.
 - **Pre-req to flag**: the installed `ledger` console-script entrypoint is broken (`ModuleNotFoundError: No module named 'cli.main'`; pyproject points at `cli.cli:cli_main`). The compliance feature reads the Ledger **registry files on disk**, so it does not depend on Ledger's CLI — but if any control ever shells out to `ledger export`, fix that entrypoint first.
 - **How MEA adopts it** (first consumer, zero coupling):
-  1. `cd ~/Code/MEA && cartographer init` already produces `cartographer.yaml`; add the `compliance:` block (frameworks `[cjis, iso27001, soc2, hipaa, ccpa, gdpr, fedramp, pcidss]`, `evidence_index` populated from `docs/compliance/compliance-readiness-matrix.md`, `project_tags` for CJI/EU/payment data).
+  1. `cd <workspace>/MEA && cartographer init` already produces `cartographer.yaml`; add the `compliance:` block (frameworks `[cjis, iso27001, soc2, hipaa, ccpa, gdpr, fedramp, pcidss]`, `evidence_index` populated from `docs/compliance/compliance-readiness-matrix.md`, `project_tags` for CJI/EU/payment data).
   2. Optionally `cartographer compliance ingest` to parse the readiness matrix + `constraints.yaml` + `classification_registry.yaml` into seed controls under `compliance/controls/` for review.
   3. Point `stack.ledger_registry` at MEA's `.ledger/registry` so data-protection controls key off real classifications.
   4. `cartographer compliance scan --format json` → coverage report; `cartographer compliance gen-tests --out tests/compliance/` → executable controls; `cartographer compliance baseline --update` → pin posture.
@@ -445,8 +445,8 @@ no code fences. It must parse and validate against ControlDef on the first try.
 - `src/cartographer/drafters/base.py` + `models.py:163` `DraftArtifact` — draft→adopt loop pattern for `add-risk`
 
 ### Key verified source anchors (MEA — first consumer / ingest sources, not coupled into the package)
-- `/Users/jmcentire/Code/MEA/docs/compliance/compliance-readiness-matrix.md` — status ladder + framework matrix + evidence index (ingest source)
-- `/Users/jmcentire/Code/MEA/constraints.yaml` and `/Users/jmcentire/Code/MEA/architecture/data_constraints.yaml` — constraint schema (ingest source)
-- `/Users/jmcentire/Code/MEA/classification_registry.yaml`, `/Users/jmcentire/Code/MEA/trust_policy.yaml` — classification/retention facets
-- `/Users/jmcentire/Code/MEA/tests/test_constraints.py` — static-assertion test style template (incl. `TestConstraintReferences` → `control_id_referenced_in_code`)
-- `/Users/jmcentire/Code/MEA/services/cases/tests/compliance_verification/goodhart/goodhart_test_suite.json` — goodhart-json suite schema template
+- `<workspace>/MEA/docs/compliance/compliance-readiness-matrix.md` — status ladder + framework matrix + evidence index (ingest source)
+- `<workspace>/MEA/constraints.yaml` and `<workspace>/MEA/architecture/data_constraints.yaml` — constraint schema (ingest source)
+- `<workspace>/MEA/classification_registry.yaml`, `<workspace>/MEA/trust_policy.yaml` — classification/retention facets
+- `<workspace>/MEA/tests/test_constraints.py` — static-assertion test style template (incl. `TestConstraintReferences` → `control_id_referenced_in_code`)
+- `<workspace>/MEA/services/cases/tests/compliance_verification/goodhart/goodhart_test_suite.json` — goodhart-json suite schema template
