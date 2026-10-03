@@ -46,13 +46,13 @@ registry. The same controls run as scored checks in payment-data projects.
 Command shape:
 
 ```bash
-PYTHONPATH=/Users/jmcentire/Code/cartographer/src \
+PYTHONPATH=<workspace>/cartographer/src \
   python3 -m cartographer.cli.main compliance scan --format json
 ```
 
-The MEA scan was run from `/Users/jmcentire/Code/MEA` using the uncommitted
+The MEA scan was run from `<workspace>/MEA` using the uncommitted
 Cartographer compliance feature. The current posture baseline was written to
-`/Users/jmcentire/Code/MEA/.cartographer/compliance/baseline.json`.
+`<workspace>/MEA/.cartographer/compliance/baseline.json`.
 
 Overall score:
 
